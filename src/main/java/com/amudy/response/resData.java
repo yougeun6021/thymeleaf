@@ -4,10 +4,10 @@ package com.amudy.response;
 import lombok.Getter;
 
 @Getter
-public class resData<T> {
+public class ResData<T> {
     private T data;
 
-    public resData(T data){
+    public ResData(T data){
         this.data = data;
     }
 }

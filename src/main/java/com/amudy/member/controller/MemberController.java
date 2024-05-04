@@ -2,7 +2,7 @@ package com.amudy.member.controller;
 
 import com.amudy.member.dto.SignupDto;
 import com.amudy.member.service.MemberService;
-import com.amudy.response.resData;
+import com.amudy.response.ResData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/member")
-    public ResponseEntity<resData<Long>> signup(@RequestBody SignupDto signupDto){
-        return new ResponseEntity<>(new resData<>(memberService.signUp(signupDto)), HttpStatus.CREATED);
+    public ResponseEntity<ResData<Long>> signup(@RequestBody SignupDto signupDto){
+        return new ResponseEntity<>(new ResData<>(memberService.signUp(signupDto)), HttpStatus.CREATED);
     }
 }
