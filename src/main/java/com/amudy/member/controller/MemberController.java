@@ -2,7 +2,7 @@ package com.amudy.member.controller;
 
 import com.amudy.member.dto.SignupDto;
 import com.amudy.member.service.MemberService;
-import com.amudy.response.ResData;
+import com.amudy.global.response.ResData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

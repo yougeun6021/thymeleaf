@@ -1,10 +1,8 @@
 package com.amudy.member.domain;
 
-import com.amudy.baseEntity.BaseEntity;
-import com.amudy.baseEntity.BaseTimeEntity;
+import com.amudy.global.baseEntity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 
