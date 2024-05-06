@@ -1,4 +1,4 @@
-package com.amudy.baseEntity;
+package com.amudy.global.baseEntity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

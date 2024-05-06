@@ -1,4 +1,4 @@
-package com.amudy.response;
+package com.amudy.global.response;
 
 
 import lombok.Getter;

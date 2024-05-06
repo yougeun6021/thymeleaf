@@ -1,4 +1,4 @@
-package com.amudy.security.userdetails;
+package com.amudy.global.security.userdetails;
 
 import com.amudy.member.domain.Member;
 import com.amudy.member.repository.MemberRepository;

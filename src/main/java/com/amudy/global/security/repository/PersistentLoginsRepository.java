@@ -1,6 +1,6 @@
-package com.amudy.security.repository;
+package com.amudy.global.security.repository;
 
-import com.amudy.security.domain.PersistentLogins;
+import com.amudy.global.security.domain.PersistentLogins;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;

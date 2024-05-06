@@ -1,4 +1,4 @@
-package com.amudy.security.domain;
+package com.amudy.global.security.domain;
 
 import lombok.Getter;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
