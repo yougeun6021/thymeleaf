@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf-extras-springsecurity5">
+<header th:fragment="headerFragment">
+    <div class="header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">
+                    <img class="icon" src="/icons/house.svg">HOME
+                </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/algorithm}">알고리즘</a>
+                        </li>
+                    </ul>
+                </div>
+                <div sec:authorize="isAnonymous()" class="anonymous">
+                    <button type="button" class="btn btn-outline-success" th:onclick="|location.href='@{/login}'|">로그인</button>
+                    <!--<button type="button" class="btn btn-outline-success">회원가입</button>-->
+                </div>
+                <div sec:authorize="isAuthenticated()" class="authenticated">
+                    <a class="icon-wrapper">
+                        <img class="icon" src="/icons/person.svg" alt="">
+                    </a>
+                    <a class="icon-wrapper">
+                        <img class="icon" src="/icons/chat.svg" alt="">
+                    </a>
+                    <a class="icon-wrapper">
+                        <img class="icon" src="/icons/bell.svg" alt="">
+                    </a>
+                    <button type="button" class="btn btn-outline-danger" th:onclick="logout()" >로그아웃</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+</html>
