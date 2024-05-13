@@ -35,13 +35,13 @@ public class AlgorithmController {
         model.addAttribute("levels");
         model.addAttribute("pbSelectBox",problemService.selectBoxProblems(new SubmitSearchCond(null,"t",1)));
         model.addAttribute("subList",submitService.searchSubmit(new SubmitSearchCond(null,"t",1)));
-        return "/algorithm/algorithm";
+        return "algorithm/algorithm";
     }
 
     @GetMapping("/algorithm/problem")
     public String searchProblem(ProblemSearchCond problemSearchcond, Model model){
         model.addAttribute("pbList",problemService.searchProblem(problemSearchcond));
-        return "/algorithm/algorithm :: pb_fragment";
+        return "algorithm/algorithm :: pb_fragment";
     }
 
 
@@ -86,7 +86,7 @@ public class AlgorithmController {
     public String searchSubmit(SubmitSearchCond submitSearchCond, Model model){
         model.addAttribute("subList",submitService.searchSubmit(submitSearchCond));
         model.addAttribute("pbSelectBox",problemService.selectBoxProblems(submitSearchCond));
-        return "/algorithm/algorithm :: sub_fragment";
+        return "algorithm/algorithm :: sub_fragment";
     }
 
     @GetMapping("/algorithm/submit/{id}")
