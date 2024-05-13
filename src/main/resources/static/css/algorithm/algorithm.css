@@ -1,0 +1,35 @@
+.chk{
+    cursor: pointer;
+}
+.container{
+    min-height: 45vh;
+}
+
+.select-week{
+    width:100px
+}
+.select-number{
+    width: 50px;
+}
+.select-member{
+    width: 150px;
+}
+.CodeMirror{
+    border: 1px solid #eee;
+    height: 700px !important;
+}
+
+.canvas-title{
+    margin-top: 25px;
+}
+
+textarea.auto-height {
+    resize: none;
+    overflow: hidden; /* 내용이 넘칠 경우 스크롤바를 숨김 */
+    margin-bottom: 50px;
+    font-size: 20px !important;
+}
+
+.code-wrapper{
+    min-height: 300px;
+}

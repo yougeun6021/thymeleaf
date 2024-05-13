@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>알고리즘</title>
+    <link th:href="@{/css/algorithm/algorithm.css}" rel="stylesheet"/>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.0/codemirror.min.css'>
+    <script type="text/javascript" th:src="@{/js/algorithm/algorithm.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror/lib/codemirror.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror/mode/clike/clike.js"></script>
+</head>
+>
+<th:block layout:fragment="content">
+    <div class="container text-start problem">
+        <div class="title mb-2 ps-2 d-flex align-items-center justify-content-between ">
+            <div class="d-flex align-items-center">
+                <img class="icon" src="/icons/list-ul.svg" alt="문제 리스트">
+                <h4 class="m-1">문제 리스트</h4>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex align-items-center me-2">
+                    <select class="form-select select-week me-1" aria-label="" id="pb_select_weak">
+                        <option value="" th:text="전체">전체</option>
+                        <option value="b" th:text="지난">지난</option>
+                        <option value="t" th:text="이번" selected>이번</option>
+                        <option value="a" th:text="다음">다음</option>
+                    </select>
+                    <div class="d-flex align-items-center">
+                        <input class="form-control select-number me-1" type="number" id="pb_select_number" min="1" max="9" step="1" value="1" style="display: none">
+                        <span class="me-1">주</span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-success me-2" th:onclick="new_problem()">새로 만들기
+                </button>
+                <button type="button" class="btn btn-outline-danger" th:onclick="remove_problem()">삭제 하기
+                </button>
+            </div>
+        </div>
+        <div class="row ps-3 pe-2 d-flex">
+            <div class="col-1 border border-black">
+                <img class="icon-col" src="/icons/check.svg" alt="선택">
+                선택
+            </div>
+            <div class="col-2 border border-black">
+                <img class="icon-col" src="/icons/123.svg" alt="문제 번호">
+                문제 번호
+            </div>
+            <div class="col-2 border border-black">
+                <img class="icon-col" src="/icons/book.svg" alt="문제">
+                문제
+            </div>
+            <div class="col-2 border border-black">
+                <img class="icon-col" src="/icons/flag.svg" alt="레벨">
+                Level
+            </div>
+            <div class="col-2 border border-black">
+                <img class="icon-col" src="/icons/calendar.svg" alt="날짜">
+                날짜
+            </div>
+            <div class="col-3 border border-black">
+                <img class="icon-col" src="/icons/link-45deg.svg" alt="링크">
+                링크
+            </div>
+        </div>
+        <div th:fragment="pb_fragment" th:id="pb_fragment">
+            <div th:if="${pbList.size() == 0}" class="row ps-3 pe-2">
+                <div class="col border border-black text-center">
+                    <p>데이터가 없습니다.</p>
+                </div>
+            </div>
+            <div class="row ps-3 pe-2" th:each="pb: ${pbList}" th:id="'pb_'+${pb.id}">
+                <div class="col-1 border border-black d-flex align-items-center justify-content-center">
+                    <input class="form-check-input chk" type="checkbox" value="" name="pb_chk"  aria-label="삭제 행 체크">
+                </div>
+                <div class="col-2 border border-black">
+                    <div class="d-flex align-items-center">
+                        <input class="form-control" th:value="${pb.number}"  th:name="pb_number" aria-label="문제 번호" th:onchange="update_problem([[${pb.id}]])">
+                    </div>
+                </div>
+                <div class="col-2 border border-black">
+                    <input class="form-control" th:value="${pb.name}"  th:name="pb_name" aria-label="문제 이름" th:onchange="update_problem([[${pb.id}]])">
+                </div>
+                <div class="col-2 border border-black">
+                    <select class="form-select" th:name="pb_level" aria-label="레벨 선택" th:onchange="update_problem([[${pb.id}]])">
+                        <option value="">선택</option>
+                        <option th:each="level : ${levels}" th:value="${level}" th:text="${level}" th:selected="${pb.level == level}"></option>
+                    </select>
+                </div>
+                <div class="col-2 border border-black">
+                    <input class="form-control pb_date" autocomplete="off" th:value="${pb.date}" data-toggle="datepicker"  th:name="pb_date" aria-label="날짜" th:onchange="update_problem_date([[${pb.id}]])">
+                </div>
+                <div class="col-3 border border-black">
+                    <div class="d-flex align-items-center">
+                        <input class="form-control me-2" th:value="${pb.link}" th:name="pb_link" aria-label="문제 링크" th:onchange="update_problem([[${pb.id}]])">
+                        <img class="copy-icon" src="/icons/copy.svg" th:onclick="util.copy('pb_link_'+[[${pb.id}]])" alt="복사">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-start pt-5">
+        <div class="title mb-2 ps-2 d-flex align-items-center justify-content-between ">
+            <div class="d-flex align-items-center">
+                <img class="icon" src="/icons/files.svg" alt="제출">
+                <h4 class="m-1">제출</h4>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex flex align-items-center me-2">
+                    <select class="form-select select-member me-1" aria-label="" id="sub_select_member">
+                        <option value="" th:text="|작성자 전체|"></option>
+                        <option value="1" th:text="유근"></option>
+                        <option value="2" th:text="재훈"></option>
+                    </select>
+                    <select class="form-select select-week me-1" aria-label="" id="sub_select_weak">
+                        <option value="" th:text="전체">전체</option>
+                        <option value="b" th:text="지난">지난</option>
+                        <option value="t" th:text="이번" selected>이번</option>
+                        <option value="a" th:text="다음">다음</option>
+                    </select>
+                    <div class="d-flex align-items-center">
+                        <input class="form-control select-number me-1" type="number" id="sub_select_number" min="1" max="9" step="1" value="1" style="display: none">
+                        <span class="me-1">주</span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-success me-2" th:onclick="new_submit()">새로 만들기
+                </button>
+                <button type="button" class="btn btn-outline-danger" th:onclick="remove_submit()">삭제 하기
+                </button>
+            </div>
+        </div>
+
+        <div class="row ps-2 pe-2 d-flex">
+            <div class="col-1 border border-black">
+                <img class="icon-col" src="/icons/check.svg" alt="선택">
+                선택
+            </div>
+            <div class="col-2 border border-black">
+                <img class="icon-col" src="/icons/person.svg" alt="작성자">
+                작성자
+            </div>
+            <div class="col-3 border border-black">
+                <img class="icon-col" src="/icons/book.svg" alt="문제">
+                문제
+            </div>
+            <div class="col-3 border border-black">
+                <img class="icon-col" src="/icons/file-earmark.svg" alt="코드제출">
+                코드 제출
+            </div>
+            <div class="col-3 border border-black">
+                <img class="icon-col" src="/icons/calendar.svg" alt="날짜">
+                날짜
+            </div>
+        </div>
+
+        <div th:fragment="sub_fragment" th:id="sub_fragment">
+            <div th:if="${subList.size() == 0}" class="row ps-3 pe-2">
+                <div class="col border border-black text-center">
+                    <p>데이터가 없습니다.</p>
+                </div>
+            </div>
+            <div class="row ps-2 pe-2" th:each="sub: ${subList}" th:id="'sub_'+${sub.submitId}">
+                <div class="col-1 border border-black d-flex align-items-center justify-content-center">
+                    <input class="form-check-input chk" type="checkbox" value="" name="sub_chk"  aria-label="삭제 행 체크">
+                </div>
+                <div class="col-2 border border-black">
+                    <div class="d-flex align-items-center">
+                        <input class="form-control" th:value="${sub.nickname}"  th:name="sub_nickname" aria-label="작성자" readonly>
+                    </div>
+                </div>
+                <div class="col-3 border border-black">
+                    <select class="form-select" th:id="'sub_pb_'+${sub.submitId}" th:name="sub_pb" aria-label="문제 선택" th:onchange="update_submit_problem([[${sub.submitId}]])">
+                        <option value="">선택</option>
+                        <option th:each="pb : ${pbSelectBox}" th:value="${pb.value}" th:text="${pb.text}" th:selected="${pb.value == sub.problemId}"></option>
+                    </select>
+                </div>
+                <div class="col-3 border border-black">
+                    <div class="d-flex align-items-center">
+                        <input class="form-control me-3 w-75" th:value="|코드 제출|"  th:name="sub_buttton" aria-label="코드 제출" readonly>
+                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" th:onclick="|get_submit_detail([[${sub.submitId}]])|">
+                            열기
+                        </button>
+                    </div>
+                </div>
+                <div class="col-3 border border-black">
+                    <input class="form-control" th:value="${sub.problemDate}"  th:name="sub_date" aria-label="날짜" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">코드 제출</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body" style="overflow-y: auto;">
+                <div class="d-flex align-items-center">
+                    <label for="canvas_pb" class="col-1 col-form-label-lg">문제</label>
+                    <select class="col-lg-10 form-select w-30" aria-label="" id="canvas_pb" th:onchange="update_canvas_submit_problem()">
+                    </select>
+                </div>
+                <div class="code-wrapper">
+                    <h3>코드 제출</h3>
+                    <textarea class="CodeMirror" id="code" name="code"></textarea>
+                </div>
+                <div class="method-wrapper">
+                    <h3 class="canvas-title">방법</h3>
+                    <textarea rows="1" class="form-control auto-height" th:oninput="|autoResize(this),update_submit_detail()|" id="method" name="method"></textarea>
+                </div>
+                <div class="etc-wrapper">
+                    <h3 class="canvas-title auto-height">기타</h3>
+                    <textarea rows="1"  class="form-control auto-height" th:oninput="|autoResize(this),update_submit_detail()|" id="etc" name="etc"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

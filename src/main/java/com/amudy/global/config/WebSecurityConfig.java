@@ -41,7 +41,7 @@ public class WebSecurityConfig {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/").permitAll()
                 .antMatchers(HttpMethod.POST,"/member").permitAll()
-                .antMatchers("/resources/**","/static/**","/images/**","/css/**","/js/**","/favicon.ico").permitAll()
+                .antMatchers("/resources/**","/static/**","/images/**","/css/**","/js/**","/favicon.ico","/icons/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()
