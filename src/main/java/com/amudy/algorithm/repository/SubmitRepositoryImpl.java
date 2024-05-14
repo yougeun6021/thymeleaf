@@ -30,6 +30,7 @@ public class SubmitRepositoryImpl implements SubmitRepositoryCustom {
                 .leftJoin(submit.problem,problem)
                 .fetchJoin()
                 .where(problem.isNull().or(betweenDate(submitSearchCond)),equalMemberId(submitSearchCond))
+                .orderBy(member.id.asc())
                 .fetch();
 
     }
